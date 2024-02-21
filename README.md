@@ -23,12 +23,25 @@ old instructions do not apply anymore
 
   - added using LMDB as a data source
   - added MLflow logging
+  - checkpoints of all epochs are now saved (not just the last 3)
 
 - in predict.py
 
   - edited predict and predict_batch functions to ALSO return the result variable (breaking changes)
 
 - in cam++.yml
+
   - moved dataset folder outside the folder code
   - added MLflow parameters
   - added new parameters for changes in predict.py
+
+- in .gitignore
+
+  - added the default exclusions
+
+### to do:
+
+- also add jupyter notebook with
+  - LMDB creation code
+  - file list creation code
+  - evaluation code
