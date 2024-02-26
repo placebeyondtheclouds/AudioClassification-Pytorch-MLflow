@@ -7,6 +7,9 @@ from torch.utils.data import Dataset
 from macls.data_utils.audio import AudioSegment
 from macls.utils.logger import setup_logger
 
+import io # by placebeyondtheclouds
+import lmdb # by placebeyondtheclouds
+
 logger = setup_logger(__name__)
 
 
@@ -21,7 +24,8 @@ class CustomDataset(Dataset):
                  aug_conf={},
                  num_speakers=1000,
                  use_dB_normalization=True,
-                 target_dB=-20):
+                 target_dB=-20,
+                 lmdb_path=None): # by placebeyondtheclouds
         """音频数据加载器
 
         Args:
@@ -51,16 +55,44 @@ class CustomDataset(Dataset):
         with open(data_list_path, 'r', encoding='utf-8') as f:
             self.lines = f.readlines()
 
+
+        # by placebeyondtheclouds
+        self.lmdb_env = None
+        self.lmdb_path = lmdb_path
+    def _init_lmdb(self): 
+        self.lmdb_env = lmdb.open(self.lmdb_path, subdir=os.path.isdir(self.lmdb_path),
+                             readonly=True, lock=False,
+                             readahead=False, meminit=False, create=False)
+        self.lmdb_txn = self.lmdb_env.begin(write=False, buffers=True)
+        # with self.lmdbenv.begin(write=False) as lmdb_txn:
+        #     self.lmdb_keys = pa.deserialize(lmdb_txn.get(b'__keys__'))
+
+    def _read_lmdb(self, key):
+        lmdb_data = self.lmdb_txn.get(key.encode())
+        # lmdb_data = io.BytesIO(lmdb_data)
+        return lmdb_data
+        # by placebeyondtheclouds
+
+
     def __getitem__(self, idx):
         # 分割音频路径和标签
         audio_path, label = self.lines[idx].strip().split('\t')
-        # 读取音频
-        audio_segment = AudioSegment.from_file(audio_path)
+
+        # by placebeyondtheclouds
+        if self.lmdb_env is None and self.lmdb_path:
+            self._init_lmdb()
+        if self.lmdb_path and (self.mode == 'train' or self.mode == 'eval'):
+            audio_segment = AudioSegment.from_bytes(self._read_lmdb(audio_path))
+        else:
+            # 读取音频 # by placebeyondtheclouds
+            audio_segment = AudioSegment.from_file(audio_path) # by placebeyondtheclouds
+        # by placebeyondtheclouds
+
         # 裁剪静音
         if self.do_vad:
             audio_segment.vad()
         # 数据太短不利于训练
-        if self.mode == 'train':
+        if self.mode == 'train' or self.mode == 'val': # ---- drop short audios during validation also---- by placebeyondtheclouds 
             if audio_segment.duration < self.min_duration:
                 return self.__getitem__(idx + 1 if idx < len(self.lines) - 1 else 0)
         # 重采样

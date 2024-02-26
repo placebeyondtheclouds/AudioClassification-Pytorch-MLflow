@@ -27,7 +27,7 @@ old instructions do not apply anymore
 
 - in predict.py
 
-  - edited predict and predict_batch functions to ALSO return the result variable (breaking changes)
+  - edited predict and predict_batch functions to ALSO return the `result` variable (**breaking changes**)
 
 - in cam++.yml
 
