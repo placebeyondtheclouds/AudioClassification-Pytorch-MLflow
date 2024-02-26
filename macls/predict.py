@@ -114,6 +114,15 @@ class MAClsPredictor:
         # decibel normalization
         if self.configs.dataset_conf.use_dB_normalization:
             audio_segment.normalize(target_db=self.configs.dataset_conf.target_dB)
+
+        # by placebeyondtheclouds
+        try:
+            if self.configs.predict.limit_all_max_duration > 0 and audio_segment.duration >= self.configs.predict.limit_all_max_duration:  
+                audio_segment.crop(duration=self.configs.predict.limit_all_max_duration, mode='eval')
+        except:
+            pass
+        # by placebeyondtheclouds
+
         assert audio_segment.duration >= self.configs.dataset_conf.min_duration, \
             f'音频太短，最小应该为{self.configs.dataset_conf.min_duration}s，当前音频为{audio_segment.duration}s'
         return audio_segment
@@ -140,7 +149,7 @@ class MAClsPredictor:
         # 最大概率的label
         lab = np.argsort(result)[-1]
         score = result[lab]
-        return self.class_labels[lab], round(float(score), 5)
+        return self.class_labels[lab], round(float(score), 5), result # by placebeyondtheclouds
 
     def predict_batch(self, audios_data: List, sample_rate=16000):
         """预测一批音频的特征
@@ -180,4 +189,4 @@ class MAClsPredictor:
             score = result[lab]
             labels.append(self.class_labels[lab])
             scores.append(round(float(score), 5))
-        return labels, scores
+        return labels, scores, results # by placebeyondtheclouds
