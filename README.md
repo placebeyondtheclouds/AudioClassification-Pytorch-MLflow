@@ -27,13 +27,17 @@ old instructions do not apply anymore
 
 - in predict.py
 
-  - edited predict and predict_batch functions to ALSO return the `result` variable (**breaking changes**)
+  - edited predict and predict_batch functions to ALSO return the `result` variable (**breaking changes**), needed for my custom inference code
 
 - in cam++.yml
 
   - moved dataset folder outside the folder code
   - added MLflow parameters
   - added new parameters for changes in predict.py
+
+- in reader.py
+
+  - added LMDB option
 
 - in .gitignore
 
