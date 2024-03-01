@@ -4,6 +4,8 @@ old instructions do not apply anymore
 
 - mlflow
   - `conda install mlflow`
+- LMDB
+  - `conda install conda-forge::python-lmdb`
 
 ### need to start before training:
 
