@@ -553,6 +553,19 @@ class MAClsTrainer(object):
                                            best_model=True)
                 # 保存模型
                 self.__save_checkpoint(save_model_path=save_model_path, epoch_id=epoch_id, best_acc=acc)
+        # exited training loop
+        if local_rank == 0: # will only log the last run if training is restarted
+            # considering multi-node training
+            world_rank = os.environ.get('RANK')
+            if world_rank is None or world_rank == '0':
+                if mlflow.active_run():
+                    results_all = pd.DataFrame(self.eval_results_all, columns=['epoch_id', 'test_loss', 'test_acc', 'val_loss', 'val_acc', 'result_f1', 'result_acc', 'result_eer_fpr', 'resut_eer_thr', 'result_eer_fnr', 'result_roc_auc_score', 'result_pr_auc']) 
+                    fname = f'models/{self.configs.experiment_run}.csv'
+                    results_all.to_csv(fname, index=None)
+                    mlflow.log_table(data=results_all, artifact_file=f'{self.configs.experiment_run}.json')
+                    mlflow.log_artifact(local_path=fname)
+                    mlflow.end_run()
+                    print(f'finished {self.configs.experiment_run}')
 
     def evaluate(self, resume_model=None, save_matrix_path=None, save_plots_mlflow=None): # by placebeyondtheclouds
         """
