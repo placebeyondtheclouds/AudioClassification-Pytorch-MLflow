@@ -554,6 +554,7 @@ class MAClsTrainer(object):
                 # 保存模型
                 self.__save_checkpoint(save_model_path=save_model_path, epoch_id=epoch_id, best_acc=acc)
         # exited training loop
+        # by placebeyondtheclouds
         if local_rank == 0: # will only log the last run if training is restarted
             # considering multi-node training
             world_rank = os.environ.get('RANK')
