@@ -442,18 +442,7 @@ class MAClsTrainer(object):
         :param resume_model: 恢复训练，当为None则不使用预训练模型
         :param pretrained_model: 预训练模型的路径，当为None则不使用预训练模型
         """
-        # by placebeyondtheclouds
-        mlflow.set_tracking_uri(self.mlflow_uri)
-        experiment_id = mlflow.get_experiment_by_name(self.experiment_name)
-        if experiment_id is None and local_rank == 0:
-            # considering multi-node training
-            world_rank = os.environ.get('RANK')
-            if world_rank is None or world_rank == '0':
-                experiment_id = mlflow.create_experiment(self.experiment_name)
-        else:
-            experiment_id = experiment_id.experiment_id
-        #mlflow.set_experiment(self.experiment_name)
-        # by placebeyondtheclouds
+
             
         # 获取有多少张显卡训练
         nranks = torch.cuda.device_count()
@@ -471,6 +460,19 @@ class MAClsTrainer(object):
             dist.init_process_group(backend='nccl')
             local_rank = int(os.environ["LOCAL_RANK"])
 
+        # by placebeyondtheclouds
+        mlflow.set_tracking_uri(self.mlflow_uri)
+        experiment_id = mlflow.get_experiment_by_name(self.experiment_name)
+        if experiment_id is None and local_rank == 0:
+            # considering multi-node training
+            world_rank = os.environ.get('RANK')
+            if world_rank is None or world_rank == '0':
+                experiment_id = mlflow.create_experiment(self.experiment_name)
+        else:
+            experiment_id = experiment_id.experiment_id
+        #mlflow.set_experiment(self.experiment_name)
+        # by placebeyondtheclouds
+        
         # by placebeyondtheclouds
         if local_rank == 0:
             # considering multi-node training

@@ -17,6 +17,10 @@ old instructions do not apply anymore
   - kill it if necessary:
     - `ps -ef | grep 'mlflow.server' | grep -v grep | awk '{print $2}' | xargs -r kill -15`
 
+### training
+
+- `CUDA_VISIBLE_DEVICES=0 LOCAL_RANK=0 torchrun --standalone --nnodes=1 --nproc_per_node=1 train.py`
+
 ### changes made to the code:
 
 - in train.py added reading local rank from environment variable
