@@ -1,5 +1,7 @@
 old instructions do not apply anymore
 
+modified for binary classification
+
 ### need to install:
 
 - mlflow
@@ -55,3 +57,4 @@ old instructions do not apply anymore
   - LMDB creation code
   - file list creation code
   - evaluation code
+  - fix metrics for multilabel classification
