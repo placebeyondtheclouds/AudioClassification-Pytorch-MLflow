@@ -624,11 +624,11 @@ class MAClsTrainer(object):
         
         # by placebeyondtheclouds
         if save_plots_mlflow is not None:
-            confusion_matrix = metrics.confusion_matrix(labels, preds)
+            cm = metrics.confusion_matrix(labels, preds)
             # cm_display = metrics.ConfusionMatrixDisplay(confusion_matrix=confusion_matrix)
             # fig, ax = plt.subplots(figsize=(4,4))
             # cm_display.plot(ax=ax)
-            cm_normalized = confusion_matrix.astype('float') / confusion_matrix.sum(axis=1)[:, np.newaxis]
+            cm_normalized = cm.astype('float') / cm.sum(axis=1)[:, np.newaxis]
             # cm_display = metrics.ConfusionMatrixDisplay(confusion_matrix = cm_normalized, display_labels = self.class_labels)
             fig, ax = plt.subplots(figsize=(5,4), dpi=150)
             sns.heatmap(data=cm_normalized, annot=True, annot_kws={"size":22}, fmt='.2f', ax=ax, xticklabels=self.class_labels, yticklabels=self.class_labels)

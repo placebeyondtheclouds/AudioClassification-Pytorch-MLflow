@@ -1,6 +1,6 @@
 old instructions do not apply anymore
 
-modified for binary classification
+metrics are modified for binary classification. multiclass classification needs further modifications
 
 ### need to install:
 
