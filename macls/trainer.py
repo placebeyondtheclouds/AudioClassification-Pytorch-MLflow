@@ -624,7 +624,7 @@ class MAClsTrainer(object):
         
         # by placebeyondtheclouds
         if save_plots_mlflow is not None:
-            cm = metrics.confusion_matrix(labels, preds)
+            cm = metrics.confusion_matrix(labels, preds) # variable name was changed from confusion_matrix to cm
             # cm_display = metrics.ConfusionMatrixDisplay(confusion_matrix=confusion_matrix)
             # fig, ax = plt.subplots(figsize=(4,4))
             # cm_display.plot(ax=ax)

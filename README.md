@@ -1,3 +1,5 @@
+# work in progress
+
 old instructions do not apply anymore
 
 metrics are modified for binary classification. multiclass classification needs further modifications
