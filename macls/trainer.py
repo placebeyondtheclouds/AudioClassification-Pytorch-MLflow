@@ -357,7 +357,8 @@ class MAClsTrainer(object):
                 # considering multi-node training
                 world_rank = os.environ.get('RANK')
                 if world_rank is None or world_rank == '0':
-                    experiment = mlflow.create_experiment(self.experiment_name)
+                    mlflow.create_experiment(self.experiment_name)
+                    experiment = mlflow.get_experiment_by_name(self.experiment_name)
                     experiment_id = experiment.experiment_id
         elif experiment.lifecycle_stage == 'deleted':
             sys.exit(f"Experiment {self.experiment_name} has been deleted. Please create a new experiment with a different name.")
