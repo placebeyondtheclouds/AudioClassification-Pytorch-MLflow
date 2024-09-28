@@ -36,7 +36,7 @@ class MAClsDataset(Dataset):
             target_dB: 音量归一化的大小
         """
         super(MAClsDataset, self).__init__()
-        assert mode in ['train', 'eval', 'extract_feature']
+        assert mode in ['train', 'eval', 'extract_feature', 'val'] # by placebeyondtheclouds
         self.data_list_path = data_list_path
         self.max_duration = max_duration
         self.min_duration = min_duration
@@ -78,7 +78,7 @@ class MAClsDataset(Dataset):
             # 读取音频
             audio_segment = AudioSegment.from_file(audio_path)
             # 数据太短不利于训练
-            if self.mode == 'train':
+            if self.mode == 'train' or self.mode == 'val':  # ---- drop short audios during validation also---- by placebeyondtheclouds
                 if audio_segment.duration < self.min_duration:
                     return self.__getitem__(idx + 1 if idx < len(self.lines) - 1 else 0)
             # 音频增强
