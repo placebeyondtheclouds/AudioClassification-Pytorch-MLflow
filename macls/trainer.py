@@ -63,6 +63,8 @@ class MAClsTrainer(object):
         self.train_loader = None
         self.test_dataset = None
         self.test_loader = None
+        self.val_dataset = None
+        self.val_loader = None
         self.amp_scaler = None
         # 读取数据增强配置文件
         if isinstance(data_augment_configs, str):
@@ -590,7 +592,7 @@ class MAClsTrainer(object):
         preds_prob = []
         accuracies, losses, preds, labels = [], [], [], []
         with torch.no_grad():
-            for batch_id, (features, label, input_lens) in enumerate(tqdm(self.test_loader)):
+            for batch_id, (features, label, input_lens) in enumerate(tqdm(self.val_loader)):
                 
                 features = features.to(self.device)
                 label = label.to(self.device).long()
