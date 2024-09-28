@@ -43,7 +43,6 @@ metrics are modified for binary classification. multiclass classification needs 
 - in trainer.py
 
   - multi-node training
-  - add tar option
   - added MLflow logging
 
 - in checkpoint.py
@@ -70,7 +69,6 @@ metrics are modified for binary classification. multiclass classification needs 
 
 ### to do:
 
-- also add jupyter notebook with
-  - file list creation code
-  - evaluation code
-  - fix metrics for multilabel classification
+- [ ] add jupyter notebook with file list creation code
+- [ ] add jupyter notebook with evaluation code
+- [ ] fix metrics for multilabel classification
