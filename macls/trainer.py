@@ -360,8 +360,7 @@ class MAClsTrainer(object):
                     mlflow.create_experiment(self.experiment_name)
                     experiment = mlflow.get_experiment_by_name(self.experiment_name)
                     experiment_id = experiment.experiment_id
-        elif experiment.lifecycle_stage == 'deleted':
-            sys.exit(f"Experiment {self.experiment_name} has been deleted. Please create a new experiment with a different name.")
+        assert experiment.lifecycle_stage != 'deleted', f"Experiment {self.experiment_name} has been deleted. Please create a new experiment with a different name." # by placebeyondtheclouds
         experiment_id = experiment.experiment_id
         #   mlflow.set_experiment(self.experiment_name)
         if local_rank == 0:
