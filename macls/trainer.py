@@ -357,9 +357,8 @@ class MAClsTrainer(object):
             world_rank = os.environ.get('RANK')
             if world_rank is None or world_rank == '0':
                 experiment_id = mlflow.create_experiment(self.experiment_name)
-        else:
-            experiment_id = experiment_id.experiment_id
-        #mlflow.set_experiment(self.experiment_name)
+
+        #   mlflow.set_experiment(self.experiment_name)
         if local_rank == 0:
             # considering multi-node training
             world_rank = os.environ.get('RANK')
