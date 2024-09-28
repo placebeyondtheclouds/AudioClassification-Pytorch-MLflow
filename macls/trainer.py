@@ -351,13 +351,17 @@ class MAClsTrainer(object):
             
         # by placebeyondtheclouds
         mlflow.set_tracking_uri(self.mlflow_uri)
-        experiment_id = mlflow.get_experiment_by_name(self.experiment_name)
-        if experiment_id is None and local_rank == 0:
-            # considering multi-node training
-            world_rank = os.environ.get('RANK')
-            if world_rank is None or world_rank == '0':
-                experiment_id = mlflow.create_experiment(self.experiment_name)
-
+        experiment = mlflow.get_experiment_by_name(self.experiment_name)
+        if experiment is None:
+            if local_rank == 0:
+                # considering multi-node training
+                world_rank = os.environ.get('RANK')
+                if world_rank is None or world_rank == '0':
+                    experiment = mlflow.create_experiment(self.experiment_name)
+                    experiment_id = experiment.experiment_id
+        elif experiment.lifecycle_stage == 'deleted':
+            experiment = mlflow.create_experiment(self.experiment_name)
+        experiment_id = experiment.experiment_id
         #   mlflow.set_experiment(self.experiment_name)
         if local_rank == 0:
             # considering multi-node training
