@@ -342,7 +342,7 @@ class MAClsTrainer(object):
             world_rank = os.environ.get('RANK') # by placebeyondtheclouds
             if world_rank is None or world_rank == '0': # by placebeyondtheclouds
                 # 日志记录器
-                writer = LogWriter(logdir='log')
+                writer = LogWriter(logdir=log_dir)
 
         if nranks > 1 and self.use_gpu:
             # 初始化NCCL环境
