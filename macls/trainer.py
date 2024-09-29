@@ -460,7 +460,7 @@ class MAClsTrainer(object):
             if world_rank is None or world_rank == '0':
                 if mlflow.active_run():
                     results_all = pd.DataFrame(self.eval_results_all, columns=['epoch_id', 'test_loss', 'test_acc', 'val_loss', 'val_acc', 'result_f1', 'result_acc', 'result_eer_fpr', 'resut_eer_thr', 'result_eer_fnr', 'result_roc_auc_score', 'result_pr_auc']) 
-                    fname = os.path.join(save_model_path, {self.configs.experiment_run}.csv)
+                    fname = os.path.join(save_model_path, f'{self.configs.experiment_run}.csv')
                     results_all.to_csv(fname, index=None)
                     mlflow.log_table(data=results_all, artifact_file=f'{self.configs.experiment_run}.json')
                     mlflow.log_artifact(local_path=fname)
