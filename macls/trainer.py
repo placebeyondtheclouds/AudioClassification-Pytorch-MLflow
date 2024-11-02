@@ -352,17 +352,20 @@ class MAClsTrainer(object):
         # by placebeyondtheclouds
         mlflow.set_tracking_uri(self.mlflow_uri)
         experiment = mlflow.get_experiment_by_name(self.experiment_name)
-        if experiment is None:
-            if local_rank == 0:
-                # considering multi-node training
-                world_rank = os.environ.get('RANK')
-                if world_rank is None or world_rank == '0':
+        
+        if local_rank == 0:
+            # considering multi-node training
+            world_rank = os.environ.get('RANK')
+            if world_rank is None or world_rank == '0':
+                if experiment is None:
+                    # Create new experiment if it doesn't exist
                     mlflow.create_experiment(self.experiment_name)
                     experiment = mlflow.get_experiment_by_name(self.experiment_name)
-                    experiment_id = experiment.experiment_id
-        assert experiment.lifecycle_stage != 'deleted', f"Experiment {self.experiment_name} has been deleted. Please create a new experiment with a different name." # by placebeyondtheclouds
+                elif experiment.lifecycle_stage == 'deleted':
+                    raise AssertionError(f"Experiment {self.experiment_name} has been deleted. Please purge the ./mlruns/.trash or create a new experiment with a different name.")
+        
         experiment_id = experiment.experiment_id
-        #   mlflow.set_experiment(self.experiment_name)
+        
         if local_rank == 0:
             # considering multi-node training
             world_rank = os.environ.get('RANK')
