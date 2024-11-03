@@ -6,10 +6,13 @@ old instructions do not apply anymore
 
 metrics are modified for binary classification. multiclass classification needs further modifications
 
-### need to install:
+### environment setup:
 
-- mlflow
-  - `conda install conda-forge::mlflow`
+- `conda create --name pytorch_env python=3.11 `
+- `conda activate pytorch_env`
+- `conda install pytorch torchvision torchaudio pytorch-cuda=11.8 -c pytorch -c nvidia`
+- `conda install ipykernel seaborn nbformat openpyxl imblearn conda-forge::mlflow`
+- `pip install -r requirements.txt`
 
 ### need to start before training:
 

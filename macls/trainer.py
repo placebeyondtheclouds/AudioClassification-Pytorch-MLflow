@@ -126,7 +126,7 @@ class MAClsTrainer(object):
                 "train_audio_files_number": self.configs.data_description.train_audio_files_number,
                 "train_audio_files_hours": self.configs.data_description.train_audio_files_hours,
                 "comment": self.configs.data_description.comment,
-                "model_growth_rate": self.configs.model_conf.growth_rate,
+                "model_growth_rate": self.configs.model_conf.model_args.growth_rate,
                 "train_max_duration": self.configs.dataset_conf.dataset.max_duration,
                 "train_min_duration": self.configs.dataset_conf.dataset.min_duration,
                 "test_max_duration": self.configs.dataset_conf.eval_conf.max_duration,
