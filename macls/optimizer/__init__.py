@@ -4,6 +4,7 @@ from loguru import logger
 from torch.optim import *
 from .scheduler import WarmupCosineSchedulerLR
 from torch.optim.lr_scheduler import *
+from .adopt import ADOPT # https://github.com/iShohei220/adopt
 
 __all__ = ['build_optimizer', 'build_lr_scheduler']
 
