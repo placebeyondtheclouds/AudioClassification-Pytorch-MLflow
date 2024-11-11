@@ -4,7 +4,12 @@ original code: https://github.com/yeyupiaoling/AudioClassification-Pytorch
 
 old instructions do not apply anymore
 
-metrics are modified for binary classification. multiclass classification needs further modifications
+## key differences
+
+- MLFlow logging
+- metrics are modified for binary classification. multiclass classification needs further modifications
+- ADOPT optimizer
+- validation during training
 
 ### environment setup:
 
