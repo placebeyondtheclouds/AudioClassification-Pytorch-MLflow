@@ -8,7 +8,7 @@ old instructions do not apply anymore
 
 - MLFlow logging
 - metrics are modified for binary classification. multiclass classification needs further modifications
-- ADOPT optimizer
+- ADOPT optimizer https://arxiv.org/abs/2411.02853 https://github.com/iShohei220/adopt
 - validation during training
 
 ### environment setup:
